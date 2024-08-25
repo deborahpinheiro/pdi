@@ -39,3 +39,4 @@ def process_data(df_raw, source_id):
 
     os.makedirs(f"{cp.project_path_work}/{source}/{subsource}", exist_ok=True)
     df_raw.to_parquet(f"{cp.project_path_work}/{source}/{subsource}/{subsource}.parquet")
+
