@@ -3,10 +3,20 @@ import pandas as pd
 import json
 import os
 import datetime
-import config_project as cp
 import utils as ut
+import env
+
 
 def process_source(source_id):
+    """
+    Processes the source data for a given source ID by fetching data from an API.
+
+    Args:
+        source_id (int): The ID of the source to process.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the fetched data from the API.
+    """
     today_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
     dict_reception = ut.read_dict_reception(source_id)
     source = dict_reception.get('source')
@@ -37,7 +47,7 @@ def process_source(source_id):
         date = datetime.datetime.now().strftime('%Y-%m-%d')
         hour = datetime.datetime.now().strftime('%H_%M_%S')
         
-        path = f"{cp.project_path_raw}/{source}/{subsource}/{date}"
+        path = f"{env.PROJECT_PATH_RAW}/{source}/{subsource}/{date}"
         os.makedirs(path, exist_ok=True)
         df.to_parquet(f"{path}/{hour}.parquet")
 

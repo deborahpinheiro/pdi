@@ -1,14 +1,26 @@
 import pandas as pd
 import os
-import config_project as cp
 import utils as ut
+import env as env
 
 def process_data(df_raw, source_id):
+    """
+    Processes the raw data by applying transformations and saving the cleaned data.
+
+    Args:
+        df_raw (pd.DataFrame): The raw DataFrame containing data to process.
+        source_id (int): The ID of the source associated with the data.
+
+    Returns:
+        None
+    """
+    filepath = env.PATH_TABLE_METADATA
+
+    metadata_df = pd.read_excel(filepath)
+
     dict_reception = ut.read_dict_reception(source_id)
     source = dict_reception.get('source')
     subsource = dict_reception.get('subsource')
-
-    metadata_df = pd.read_excel('tabelas/tb_metadata.xlsx')
 
     rename_dict = dict(zip(metadata_df['column_name'], metadata_df['renamed_column']))
     df_raw = df_raw.rename(columns=rename_dict)
@@ -37,6 +49,6 @@ def process_data(df_raw, source_id):
     key_columns = metadata_df.loc[metadata_df['key'] == True, 'renamed_column'].tolist()
     df_raw = df_raw[~df_raw.duplicated(subset=key_columns, keep=False)]
 
-    os.makedirs(f"{cp.project_path_work}/{source}/{subsource}", exist_ok=True)
-    df_raw.to_parquet(f"{cp.project_path_work}/{source}/{subsource}/{subsource}.parquet")
+    os.makedirs(f"{env.PROJECT_PATH_WORK}/{source}/{subsource}", exist_ok=True)
+    df_raw.to_parquet(f"{env.PROJECT_PATH_WORK}/{source}/{subsource}/{subsource}.parquet")
 
