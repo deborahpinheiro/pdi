@@ -1,7 +1,12 @@
 import pandas as pd
 import os
 import utils as ut
-import env as env
+from dotenv import load_dotenv
+
+load_dotenv()
+
+path_table_metadata = os.getenv('PATH_TABLE_METADATA')
+work_path = os.getenv('PROJECT_PATH_WORK')
 
 def process_data(df_raw, source_id):
     """
@@ -14,9 +19,8 @@ def process_data(df_raw, source_id):
     Returns:
         None
     """
-    filepath = env.PATH_TABLE_METADATA
-
-    metadata_df = pd.read_excel(filepath)
+    
+    metadata_df = pd.read_excel(path_table_metadata)
 
     dict_reception = ut.read_dict_reception(source_id)
     source = dict_reception.get('source')
@@ -49,6 +53,6 @@ def process_data(df_raw, source_id):
     key_columns = metadata_df.loc[metadata_df['key'] == True, 'renamed_column'].tolist()
     df_raw = df_raw[~df_raw.duplicated(subset=key_columns, keep=False)]
 
-    os.makedirs(f"{env.PROJECT_PATH_WORK}/{source}/{subsource}", exist_ok=True)
-    df_raw.to_parquet(f"{env.PROJECT_PATH_WORK}/{source}/{subsource}/{subsource}.parquet")
+    os.makedirs(f"{work_path}/{source}/{subsource}", exist_ok=True)
+    df_raw.to_parquet(f"{work_path}/{source}/{subsource}/{subsource}.parquet")
 

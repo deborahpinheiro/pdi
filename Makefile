@@ -1,15 +1,25 @@
 VENV = pdi_deborah
+IMAGE = imagem_executar
 
 create_venv:
 	python -m venv $(VENV)
 
-install: create_venv
+install: 
 	$(VENV)/Scripts/pip install -r requirements.txt
 
-run: install
+activate_env:
+	$(VENV)\Scripts\activate.bat
+
+run:  #verificar como executa o app.py
 	@echo "Running the application..."
-	$(VENV)/Scripts/python -m src.app
+	src/app.py
 
 clean:
 	rmdir /s /q $(VENV)
-all: run
+all: create_env install activate_env run
+
+docker/build:
+	docker build -t $(IMAGE) .
+
+docker/run:
+	docker run $(IMAGE)

@@ -2,7 +2,12 @@ import pandas as pd
 import unicodedata as un
 import re
 import psutil
-import env as env
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+reception_path = os.getenv('PATH_TABLE_RECEPTION')
 
 def read_dict_reception(source_id):
     """
@@ -14,9 +19,8 @@ def read_dict_reception(source_id):
     Returns:
         dict: A dictionary containing the reception data for the specified source ID.
     """
-    filepath = env.PATH_TABLE_RECEPTION
 
-    dict_reception = pd.read_excel(filepath, engine='openpyxl')
+    dict_reception = pd.read_excel(reception_path, engine='openpyxl')
     dict_reception = dict_reception[dict_reception['source_id'] == source_id]
 
     dict_reception = dict_reception.iloc[0]
@@ -48,24 +52,3 @@ def standardize_numbers(value):
         str: The standardized number as a string, containing only digits.
     """
     return re.sub(r'\D', '', value)
-
-def report_resource_usage():
-    """
-    Reports the current CPU and memory usage statistics.
-    Prints the CPU usage percentage and memory usage details.
-    """
-    cpu_usage = psutil.cpu_percent(interval=1)  # Intervalo para calcular a média
-    
-    # Uso de Memória
-    memory_info = psutil.virtual_memory()
-    memory_usage = memory_info.percent
-    memory_used = memory_info.used / (1024 ** 2)  # Converte de bytes para MB
-    memory_total = memory_info.total / (1024 ** 2)  # Converte de bytes para MB
-
-    # Relatório
-    print("=== Resource Usage Report ===")
-    print(f"CPU Usage: {cpu_usage}%")
-    print(f"Memory Usage: {memory_usage}%")
-    print(f"Memory Used: {memory_used:.2f} MB")
-    print(f"Memory Total: {memory_total:.2f} MB")
-    print("=============================")
