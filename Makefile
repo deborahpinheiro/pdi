@@ -12,14 +12,15 @@ activate_env:
 
 run:  #verificar como executa o app.py
 	@echo "Running the application..."
-	src/app.py
+	python src/app.py
 
 clean:
-	rmdir /s /q $(VENV)
-all: create_env install activate_env run
+	rm -rf /s /q $(VENV)
+
+all: create_venv install activate_env run
 
 docker/build:
 	docker build -t $(IMAGE) .
 
 docker/run:
-	docker run $(IMAGE)
+    docker run -it $(IMAGE) /bin/sh -c "cd src && python app.py"

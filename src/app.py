@@ -6,7 +6,6 @@ import cProfile
 import pstats
 from io import StringIO
 
-
 def main(source_id):
     
     df_raw = reception.process_source(source_id)
@@ -18,6 +17,11 @@ if __name__ == "__main__":
     profiler.enable()
 
     main(1)
+
+    stats = pstats.Stats(profiler)
+    stats.strip_dirs()
+    stats.sort_stats('cumulative')
+    stats.print_stats()
 
     profiler.disable()
     profiler.dump_stats("resultado.prof")
