@@ -23,5 +23,4 @@ docker/run:
 	@docker run -it $(IMAGE) /bin/sh -c "cd src && python app.py"
 
 all: docker/build docker/run
-
 #create_venv install activate_env run
