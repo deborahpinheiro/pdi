@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["/bin/sh", "-c", "cd src && python app.py && snakeviz resultado.prof"]
+CMD ["/bin/sh", "-c", "cd src && python app.py"]
