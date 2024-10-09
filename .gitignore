@@ -1,0 +1,7 @@
+pdi_deborah/
+__pycache__/
+RAW/
+WORK/
+profile_stats.txt
+*.ipynb
+*.prof
