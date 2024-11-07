@@ -5,6 +5,7 @@ import os
 import datetime
 import utils as ut
 from dotenv import load_dotenv
+import logging as log
 
 load_dotenv()
 
@@ -21,12 +22,17 @@ def process_source(source_id):
     Returns:
         pd.DataFrame: A DataFrame containing the fetched data from the API.
     """
+    log.info("Iniciando o processo de Recepção da origem.")
+    
     today_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
     dict_reception = ut.read_dict_reception(source_id)
     source = dict_reception.get('source')
     subsource = dict_reception.get('subsource')
+    
+    log.info(f"Origem: {source}/{subsource}")
 
     if dict_reception.get('ingestion_type').lower() == 'api' and dict_reception.get('method_api_1').lower() == 'post':
+        
         url_post = dict_reception.get('url_api_1')
         headers_post = dict_reception.get('headers_api_1')
         params_post = dict_reception.get('params_api_1')

@@ -2,31 +2,33 @@ import services.reception as reception
 import services.loader as loader
 import utils
 from timeit import timeit
-import cProfile
-import pstats
 from io import StringIO
+import logging 
+import stats_utils as su
 
-def main(source_id):
+def receptor(source_id):
     
-    df_raw = reception.process_source(source_id)
+    try:
+        logging.info("Iniciando o processo de Recepção...")
+        df_raw = reception.process_source(source_id = source_id)
+        
+        logging.info(f"Processo de Recepção executado com sucesso!")
+        return df_raw
+    
+    except Exception as e:
+        logging.error("Erro ao executar: ", exc_info=True)
 
-    print(df_raw)
+def load(df,source_id):
+    try:
+        logging.info("Iniciando o processo de Carga e tratamento.")
+        loader.process_data(df=df, source_id=source_id)
+    
+    except Exception as e:
+        logging.error("Erro ao executar:", exc_info=True)
+       
 
 if __name__ == "__main__":
-    profiler = cProfile.Profile()
-    profiler.enable()
-
-    main(1)
-
-    stats = pstats.Stats(profiler)
-    stats.strip_dirs()
-    stats.sort_stats('cumulative')
-    stats.print_stats()
-
-    profiler.disable()
-    profiler.dump_stats("resultado.prof")
-
-    exec_time = timeit(lambda: main(1), number=1)
-    print(f"Tempo de execução: {exec_time:.5f} segundos")
-
-   
+    
+    df = receptor(1)
+    
+    load(df, 1)
