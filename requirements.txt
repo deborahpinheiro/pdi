@@ -5,3 +5,5 @@ pyarrow==17.0.0
 python-dotenv==1.0.1
 snakeviz==2.2.0
 memory_profiler==0.61.0
+apache-airflow==2.7.0
+apache-airflow-providers-docker==3.2.0
