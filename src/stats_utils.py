@@ -16,7 +16,6 @@ def run_profiler(func, *args, **kwargs):
     profiler.disable()
     profiler.dump_stats("resultado.prof")
 
-    # Calcula o tempo de execução com timeit
     exec_time = timeit(lambda: func(*args, **kwargs), number=1)
     print(f"Tempo de execução: {exec_time:.5f} segundos")
 
