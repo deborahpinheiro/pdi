@@ -13,6 +13,7 @@ services:
     volumes:
       - ./airflow/dags:/opt/airflow/dags  # DAGs
       - ./src:/opt/airflow/src            # Código fonte
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - airflow-db
 

@@ -25,9 +25,6 @@ docker/run:
 
 # Airflow with Docker Compose
 
-
-
-# Alvo completo para configurar o Airflow e criar o usuário admin
 airflow_start:
 	docker-compose -f docker-compose-airflow.yml up -d
 
